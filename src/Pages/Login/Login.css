@@ -7,4 +7,24 @@
     border-radius: 8px;
     margin-top: 100px;
     padding: 50px 0px 60px 0px;
+    margin-bottom: 15px;
+}
+
+.form-submit {
+    width: 415px;
+    height: 50px;
+    border: none;
+    border-radius: 8px;
+    font-size: 22px;
+    color: aliceblue;
+    margin-bottom: 10px;
+}
+
+.form-submit:hover {
+    background-color: aqua;
+}
+
+.form-link {
+    text-decoration: none;
+
 }
