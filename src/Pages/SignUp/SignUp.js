@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useCreateUserWithEmailAndPassword } from 'react-firebase-hooks/auth';
+import { useCreateUserWithEmailAndPassword, useUpdateProfile } from 'react-firebase-hooks/auth';
 import auth from '../../firebase.init'
+import SocialLogin from '../Login/SocialLogin/SocialLogin';
+import Loading from '../Shared/Loading/Loading';
 
 
 const SignUp = () => {
@@ -9,15 +11,20 @@ const SignUp = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [error, setError] = useState('');
+    const [agree, setAgree] = useState(false);
     const navigate = useNavigate();
 
-    const [createUserWithEmailAndPassword, user] = useCreateUserWithEmailAndPassword(auth)
+    const [createUserWithEmailAndPassword, user, loading] = useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true })
+    const [updateProfile, updating, updateerror] = useUpdateProfile(auth);
 
     const handleEmailBlur = e => {
         setEmail(e.target.value)
     }
     const handlePasswordBlur = e => {
         setPassword(e.target.value)
+    }
+    if (loading || updating) {
+        return <Loading></Loading>
     }
 
     if (user) {
@@ -29,8 +36,11 @@ const SignUp = () => {
     }
 
 
-    const handleCreateUser = e => {
+    const handleCreateUser = async (e) => {
         e.preventDefault();
+        // const agree = e.target.terms.checked;
+
+
         if (password !== confirmPassword) {
             setError('both of your passwords do not match')
             return;
@@ -39,7 +49,10 @@ const SignUp = () => {
             setError('Password must be 6 characters or longer')
             return;
         }
-        createUserWithEmailAndPassword(email, password);
+        await createUserWithEmailAndPassword(email, password);
+        await updateProfile({ displayName: email });
+        alert('Update profile')
+        navigate('/home');
     }
 
     return (
@@ -59,15 +72,18 @@ const SignUp = () => {
                         <label htmlFor='confirm-password' className="form-label">Confirm Password</label>
                         <input onBlur={handleConfirmPasswordBlur} type="password" className="form-control" name='confirm-password' required />
                     </div>
-                    <div className="mb-3 form-check">
-                        <input className='mx-2' type="checkbox" />
-                        <label className="form-check-label" >Check me out</label>
-                    </div>
+                    <input onClick={() => setAgree(!agree)} type="checkbox" name="terms" id="terms" />
+                    <label className={agree ? 'text-primary ps-2' : 'text-danger ps-2'} htmlFor="terms" > Accept terms and conditions</label>
                     <p className='text-danger' >{error}</p>
-                    <input className='form-submit bg-primary ' type="submit" value="Sign Up" />
+                    <input
+                        disabled={!agree}
+                        className='form-submit bg-primary '
+                        type="submit"
+                        value="Sign Up" />
                 </form>
                 <p className='d-flex justify-content-end'>
                     Existing User?<Link className='text-primary form-link mx-2' to='/login'>Log In</Link>
+                    <SocialLogin></SocialLogin>
                 </p>
             </div>
         </div>
