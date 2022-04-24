@@ -15,7 +15,7 @@ const SignUp = () => {
     const navigate = useNavigate();
 
     const [createUserWithEmailAndPassword, user, loading] = useCreateUserWithEmailAndPassword(auth, { sendEmailVerification: true })
-    const [updateProfile, updating, updateerror] = useUpdateProfile(auth);
+    const [updateProfile, updating, updateError] = useUpdateProfile(auth);
 
     const handleEmailBlur = e => {
         setEmail(e.target.value)

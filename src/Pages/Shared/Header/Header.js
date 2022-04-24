@@ -26,6 +26,12 @@ const Header = () => {
                     <Link to="/features">Features</Link>
                     <Link to="/pricing">Pricing</Link>
                     {
+                        user && <>
+                            <Nav.Link as={Link} to="addservice">Add</Nav.Link>
+                            <Nav.Link as={Link} to="manage">Manage</Nav.Link>
+                        </>
+                    }
+                    {
                         user ?
                             <button onClick={handleSignOut}>Sign Out</button>
                             :

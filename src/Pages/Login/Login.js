@@ -8,8 +8,10 @@ import Loading from '../Shared/Loading/Loading';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import { Button } from 'bootstrap';
+import PageTitle from '../Shared/PageTitle/PageTitle';
 
 const Login = () => {
+
     const emailRef = useRef('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -66,6 +68,7 @@ const Login = () => {
 
     return (
         <div className='form-container d-flex justify-content-center'>
+            <PageTitle title="Login"></PageTitle>
             <div className='form-title'>
                 <h1 className='text-primary'>Login</h1>
                 <form onSubmit={handleUserLogin}>

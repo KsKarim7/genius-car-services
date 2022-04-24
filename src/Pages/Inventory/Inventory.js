@@ -1,9 +1,28 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
 
 const Inventory = () => {
+    const { id } = useParams();
+    const [service, setService] = useState({})
+
+
+    useEffect(() => {
+        const url = `http://localhost:5000/service/${id}`
+        console.log(url)
+
+        fetch(url)
+            .then(res => res.json())
+            .then(data => setService(data))
+    }, [])
     return (
         <div>
-            <h2>You preferred services:</h2>
+            <h2>You are about to book services: {service.name}</h2>
+            <div className='text-center'>
+                <Link to="/checkout">
+                    <button className='btn btn-primary'> Proceed Checkout</button>
+
+                </Link>
+            </div>
         </div>
     );
 };
